@@ -52,7 +52,7 @@ export const userSchema = z
         message: "Weight must be a number",
       }),
     plan: z.enum(plans, {
-      required_error: "Plan is required",
+      errorMap: () => ({ message: "Please select a plan" }),
     }),
   })
   .refine((data) => data.password === data.confirmPassword, {

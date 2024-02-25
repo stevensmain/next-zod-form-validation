@@ -1,20 +1,29 @@
-import { SelectHTMLAttributes } from "react";
+import { ForwardedRef, SelectHTMLAttributes, forwardRef } from "react";
 import clsx from "clsx";
 
-interface InputProps extends SelectHTMLAttributes<HTMLSelectElement> {
+interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   label: string;
-  options: { label: string; value: string }[];
+  options: SelectOptions[];
   error?: string | null;
+  placeholder?: string;
 }
 
-export default function Select({
-  className,
-  label,
-  id,
-  error,
-  options,
-  ...props
-}: InputProps) {
+type SelectOptions = { label: string; value: string };
+
+type SelectRef = ForwardedRef<HTMLSelectElement>;
+
+export default forwardRef(function Select(
+  {
+    className,
+    label,
+    id,
+    error,
+    options,
+    placeholder = "Select..",
+    ...props
+  }: SelectProps,
+  ref: SelectRef
+) {
   return (
     <>
       <label
@@ -25,13 +34,17 @@ export default function Select({
       </label>
       <select
         id={id}
+        ref={ref}
         {...props}
         className={clsx(
           "shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light",
           className
         )}
       >
-        {options.map(({ label, value }) => (
+        <option value="" selected>
+          {placeholder}
+        </option>
+        {options.map(({ label, value }, key) => (
           <option value={value} key={value}>
             {label}
           </option>
@@ -42,4 +55,4 @@ export default function Select({
       )}
     </>
   );
-}
+});

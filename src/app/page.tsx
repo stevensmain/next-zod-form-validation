@@ -12,10 +12,8 @@ type Inputs = {
   email: string;
   password: string;
   confirmPassword: string;
-  dayOfBirth: string;
   weight: string;
   plan: string;
-  dateOfBirth: string;
 };
 
 export default function Home() {
@@ -136,6 +134,8 @@ export default function Home() {
                 label="Plans"
                 options={plansOptions}
                 id="plan"
+                error={errors.plan?.message}
+                placeholder="Select a plan"
                 {...field}
               />
             )}
